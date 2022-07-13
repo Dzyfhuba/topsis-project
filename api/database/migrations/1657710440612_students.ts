@@ -10,7 +10,10 @@ export default class extends BaseSchema {
       table.string('name')
       table.string('department')
       table.integer('year')
-      table.integer('parents_id').unsigned().references('id').inTable('parents')
+      table.integer('parent_statuses_id').unsigned().references('id').inTable('parent_statuses')
+      table.bigInteger('parents_expense')
+      table.bigInteger('parents_income')
+      table.float('grade_point_average')
       table.integer('organization_id').unsigned().references('id').inTable('organizations')
 
       /**

@@ -5,6 +5,9 @@ export default class Organization extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public joined: Boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

@@ -1,9 +1,12 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-export default class Parent extends BaseModel {
+export default class ParentStatus extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public status: String
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

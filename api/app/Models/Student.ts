@@ -27,7 +27,7 @@ export default class Student extends BaseModel {
   public grade_point_average: Number
 
   @column()
-  public organization_id: Number
+  public organizations_id: Number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

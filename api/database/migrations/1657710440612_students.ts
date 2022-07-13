@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.bigInteger('parents_expense')
       table.bigInteger('parents_income')
       table.float('grade_point_average')
-      table.integer('organization_id').unsigned().references('id').inTable('organizations')
+      table.integer('organizations_id').unsigned().references('id').inTable('organizations')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

@@ -9,7 +9,7 @@ import Button from '../Components/Button'
 registerAllModules();
 
 const Home = () => {
-	// const [data, setData] = useState([])
+	const [globalData, setGlobalData] = useState([])
 	// const [colHeaders, setColHeaders] = useState([])
 	const [hot, setHot] = useState(Object)
 
@@ -35,6 +35,7 @@ const Home = () => {
 	}, [])
 
 	const parseDataToTable = async (data) => {
+		console.log(data)
 		const parsed = await data.map(item => {
 			return {
 				name: item.name,
@@ -43,10 +44,11 @@ const Home = () => {
 				joined: item.joined ? 'Gabung' : 'Tidak',
 				status: item.status,
 				parents_income: item.parents_income,
-				parents_expense: item.parents_expense
+				parents_expense: item.parents_expense,
+				rank: item.rank || null
 			}
 		})
-		console.log(parsed)
+		setGlobalData(data)
 
 		const parsedArray = parsed.map(({
 			name,
@@ -56,6 +58,7 @@ const Home = () => {
 			status,
 			parents_income,
 			parents_expense,
+			rank
 		}) => [
 			name,
 			department,
@@ -64,6 +67,7 @@ const Home = () => {
 			status,
 			parents_income,
 			parents_expense,
+			rank
 		])
 		console.log(parsedArray)
 		const keys = Object.keys(parsed[0])
@@ -87,6 +91,13 @@ const Home = () => {
 		  });	
 	}
 
+	const handleCalculate = async () => {
+		const data = globalData
+
+		axios.post('http://localhost:5000/topsis', data)
+		.then(res => console.log(res.data))
+	}
+
 	return (
 		<>
 			<header>
@@ -95,6 +106,7 @@ const Home = () => {
 			<main className='min-h-screen py-20 bg-primary flex flex-col items-center justify-center'>
 				<div className="mb-3">
 					<Button onClick={handleExport}>Export and Download</Button>
+					<Button onClick={handleCalculate}>Calculate Rank</Button>
 				</div>
 				<div id='data'></div>
 			</main>

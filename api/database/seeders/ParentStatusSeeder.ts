@@ -15,7 +15,7 @@ export default class extends BaseSeeder {
         status: 'motherless',
       },
       {
-        status: 'commplete',
+        status: 'complete',
       },
     ])
   }

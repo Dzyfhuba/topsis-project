@@ -4,7 +4,7 @@ import Factory from '@ioc:Adonis/Lucid/Factory'
 export default Factory.define(Student, ({ faker }) => {
   const department = ['informatics', 'industry', 'electrical']
   const income = (Math.floor(Math.random() * (20 - 1)) + 1) * 1000000
-  const parentStatusesId = Math.floor((Math.random() * 100) % 3)+1
+  const parentStatusesId = Math.floor((Math.random() * 100) % 4)+1
   return {
     name: faker.name.findName(),
     department: department[Math.floor(Math.random() * department.length)],

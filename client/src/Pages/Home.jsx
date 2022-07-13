@@ -17,7 +17,7 @@ const Home = () => {
 		axios.get('http://localhost:3333/students')
 		.then(response => parseDataToTable(response.data.students))
 		.then(({parsedArray, keys}) => {
-			console.log(parsedArray)
+			// console.log(parsedArray)
 			const container = document.querySelector('#data')
 			const hot_elem = new Handsontable(container, {
 				data: parsedArray,
@@ -28,6 +28,9 @@ const Home = () => {
 				columnSorting: true,
 				dropdownMenu: true,
 				filters: true,
+				hiddenColumns: {
+					columns: [0]
+				},
 				licenseKey: 'non-commercial-and-evaluation'
 			})
 			setHot(hot_elem)
@@ -35,9 +38,10 @@ const Home = () => {
 	}, [])
 
 	const parseDataToTable = async (data) => {
-		console.log(data)
+		// console.log(data)
 		const parsed = await data.map(item => {
 			return {
+				id: item.id,
 				name: item.name,
 				department: item.department,
 				year: item.year,
@@ -51,6 +55,7 @@ const Home = () => {
 		setGlobalData(data)
 
 		const parsedArray = parsed.map(({
+			id,
 			name,
 			department,
 			year,
@@ -60,6 +65,7 @@ const Home = () => {
 			parents_expense,
 			rank
 		}) => [
+			id,
 			name,
 			department,
 			year,
@@ -69,7 +75,7 @@ const Home = () => {
 			parents_expense,
 			rank
 		])
-		console.log(parsedArray)
+		// console.log(parsedArray)
 		const keys = Object.keys(parsed[0])
 		return {parsedArray, keys}
 	}
@@ -91,11 +97,56 @@ const Home = () => {
 		  });	
 	}
 
+	const mergeArray = (arr1 = [], arr2 = []) => {
+		let i = -1;
+		const copy = arr1.slice();
+		copy.forEach(obj => {
+		   const helper = [];
+		   arr2.forEach(obj2 => {
+			  if(obj.id == obj2.id){
+				 i++;
+				 helper.push(arr2[i]['rank']);
+			  };
+		   })
+		   if(helper.length !== 0){
+			  obj.Rank = helper[0];
+		   };
+		})
+		return copy;
+	 };
+
 	const handleCalculate = async () => {
 		const data = globalData
 
 		axios.post('http://localhost:5000/topsis', data)
-		.then(res => console.log(res.data))
+		.then(res => res.data)
+		.then(data => {
+			data.shift()
+			// console.log(globalData)
+			const merged = mergeArray(globalData, data)
+
+			const keys = Object.keys(merged[0])
+
+			keys[11] = 'parents_status'
+			keys[12] = 'organization'
+
+			const container = document.querySelector('#data')
+			const hot_elem = new Handsontable(container, {
+				data: merged,
+				colHeaders: keys,
+				height: '80vh',
+				width: '80vw',
+				rowHeaders: true,
+				columnSorting: true,
+				dropdownMenu: true,
+				filters: true,
+				hiddenColumns: {
+					columns: [0, 4, 8, 9, 10]
+				},
+				licenseKey: 'non-commercial-and-evaluation'
+			})
+			setHot(hot_elem)
+		})
 	}
 
 	return (
@@ -104,7 +155,7 @@ const Home = () => {
 				<Navbar />
 			</header>
 			<main className='min-h-screen py-20 bg-primary flex flex-col items-center justify-center'>
-				<div className="mb-3">
+				<div className="mb-3 w-4/5 flex justify-center gap-5">
 					<Button onClick={handleExport}>Export and Download</Button>
 					<Button onClick={handleCalculate}>Calculate Rank</Button>
 				</div>

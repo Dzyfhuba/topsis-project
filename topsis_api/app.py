@@ -69,7 +69,7 @@ class TOPSIS(Resource):
                     #    'parents_income': row[4],
                     #    'grade_point_average': row[5],
                     #    'organizations_id': row[6],
-                       'Rank': row[7]
+                       'rank': row[7]
                        })
 
 

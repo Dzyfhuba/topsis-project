@@ -19,7 +19,7 @@ export default class Input extends Component {
 			<div className="mb-3">
 				<label htmlFor={this.props.label} className='block capitalize'>{this.props.label}</label>
 				<input type={this.props.type} name={this.props.name} id={this.props.name} placeholder={this.props.placeholder}
-					className={`p-3 rounded-xl ${this.props.className}`}
+					className={`p-3 rounded-xl w-full ${this.props.className}`}
 				/>
 			</div>
 		)

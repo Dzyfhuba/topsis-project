@@ -7,6 +7,8 @@ import Handsontable from 'handsontable'
 import Button from '../Components/Button'
 import Modal from '../Containers/Modal'
 import Input from '../Components/Input'
+import ButtonAnchor from '../Components/ButtonAnchor'
+import Hosts from '../Config/Hosts'
 
 registerAllModules();
 
@@ -16,7 +18,7 @@ const Home = () => {
 	const [hot, setHot] = useState(Object)
 
 	useEffect(() => {
-		axios.get('http://localhost:3333/students')
+		axios.get(`${Hosts.main}/students`)
 		.then(response => parseDataToTable(response.data.students))
 		.then(({parsedArray, keys}) => {
 			// console.log(parsedArray)
@@ -165,23 +167,12 @@ const Home = () => {
 				<Navbar />
 			</header>
 			<main className='min-h-screen py-20 bg-primary flex flex-col items-center justify-center'>
-				<div className="mb-3 w-4/5 flex justify-center gap-5">
+				<div className="mb-3 w-4/5 flex justify-around gap-5">
 					<Button onClick={handleExport}>Export and Download</Button>
 					<Button onClick={handleCalculate}>Calculate Rank</Button>
+					<ButtonAnchor to={'/create'}>Add New Data</ButtonAnchor>
 				</div>
 				<div id='data'></div>
-				<Modal show={false}>
-					<h1 className='font-black mb-3'>Tambah Pelajar Baru</h1>
-					<form>
-						<Input label={'Nama'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Nama Pelajar' />
-						<Input label={'Jurusan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Jurusan Pelajar' />
-						<Input label={'Tahun Angkatan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Tahun Angkatan Pelajar' />
-						<Input label={'Keorganisasian'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Keorganisasian Pelajar' />
-						<Input label={'Gaji Orang Tua'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Gaji Orang Tua Pelajar' />
-						<Input label={'Pengeluaran Bulanan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Pengeluaran Bulanan Pelajar' />
-						<Input label={'IPK'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan IPK Pelajar' />
-					</form>
-				</Modal>
 			</main>
 		</>
 	)

@@ -22,4 +22,19 @@ export default class StudentsController {
       })
     }
   }
+
+  public async store ({response, request}) {
+    try {
+      // const student = await Student
+      return response.send({
+        data: request.body(),
+      })
+    } catch (error) {
+      return response.send({
+        error: true,
+        status: 'error',
+        data: error,
+      })
+    }
+  }
 }

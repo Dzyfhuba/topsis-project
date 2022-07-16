@@ -123,7 +123,7 @@ const Home = () => {
 	const handleCalculate = async () => {
 		const data = globalData
 
-		axios.post('http://localhost:5000/topsis', data)
+		axios.post('https://topsispy.hafidzubaidillah.com/topsis', data)
 		.then(res => res.data)
 		.then(data => {
 			data.shift()

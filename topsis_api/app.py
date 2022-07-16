@@ -15,7 +15,11 @@ import csv
 app = Flask(__name__)
 corst = CORS(app, resources={
 	r"/*" : {
-		"origin" : "http://localhost:3000"
+		"origin" : [
+                "http://localhost:3000", 
+                "http://localhost:3001",
+                "https://topsis.hafidzubaidillah.com"
+              ]
 	}
 })
 

@@ -26,3 +26,7 @@ Route.get('/', async () => {
 
 Route.get('/students', 'StudentsController.index')
 Route.post('/students', 'StudentsController.store')
+
+Route.get('/organizations', 'OrganizationsController.get')
+
+Route.get('/parentstatuses', 'ParentStatusesController.get')

@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Components/Button";
 import ButtonAnchor from "../Components/ButtonAnchor";
 import Input from "../Components/Input";
+import Select from "../Components/Select";
 import Hosts from "../Config/Hosts";
 import Navbar from "../Containers/Navbar";
 
@@ -25,10 +26,25 @@ const Create = () => {
     const handleChangeParentsIncome = e => setParents_income(e.target.value)
     const handleChangeGradePointAverage = e => setGrade_point_average(e.target.value)
 
+    const [defaultOrganization, setDefaultOrganization] = useState([])
+    const [defaultParentStatuses, setDefaultParentStatuss] = useState([])
+
+    useEffect(() => {
+        axios.get(`${Hosts.main}/organizations`)
+            .then(res => {
+                setDefaultOrganization(res.data.data)
+            })
+        axios.get(`${Hosts.main}/parentstatuses`)
+            .then(res => {
+                console.log(res.data.data)
+                setDefaultParentStatuss(res.data.data)
+            })
+    }, [])
+
     const handleSubmit = e => {
         e.preventDefault()
 
-        const data = {name, department, year, organizations_id, parent_statuses_id, parents_expense, grade_point_average}
+        const data = {name, department, year, organizations_id, parent_statuses_id, parents_expense, parents_income, grade_point_average}
 
         axios.post(`${Hosts.main}/students`, data)
             .then(res => {
@@ -43,7 +59,7 @@ const Create = () => {
         <Navbar />
       </header>
       <main className="min-h-screen py-20 px-4 md:px-24 bg-primary flex flex-col items-center justify-center">
-        <form className="w-full">
+        <form className="w-full" onSubmit={handleSubmit}>
           <Input
             label={"Nama"}
             type="text"
@@ -68,14 +84,32 @@ const Create = () => {
             placeholder="Masukkan Tahun Angkatan Pelajar"
             onChange={handleChangeYear}
           />
-          <Input
+          {/* <Input
             label={"Keorganisasian"}
             type="text"
             name="organization"
             className="text-neutral-700"
             placeholder="Masukkan Keorganisasian Pelajar"
             onChange={handleChangeOrganization}
-          />
+          /> */}
+          <Select label="Pilih Status Keorganisasian" name="organization" onChange={handleChangeOrganization}>
+            {
+                defaultOrganization.map(({id,joined}, key) => (<option value={id} key={key}>{joined ? 'Gabung' : 'Tidak'}</option>))
+            }
+          </Select>
+           {/* <Input
+            label={"Status Orang Tue"}
+            type="text"
+            name="status"
+            className="text-neutral-700"
+            placeholder="Masukkan Status Orang Tue"
+            onChange={handleChangeParentStatuses}
+          /> */}
+          <Select name="status" label='Masukkan Status Orang Tua' onChange={handleChangeParentStatuses}>
+            {
+                defaultParentStatuses.map(({id,status}, key) => (<option value={id} key={key}>{status}</option>))
+            }
+          </Select>
           <Input
             label={"Gaji Orang Tua"}
             type="text"

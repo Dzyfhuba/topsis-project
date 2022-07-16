@@ -5,6 +5,8 @@ import Navbar from '../Containers/Navbar'
 import { registerAllModules } from 'handsontable/registry'
 import Handsontable from 'handsontable'
 import Button from '../Components/Button'
+import Modal from '../Containers/Modal'
+import Input from '../Components/Input'
 
 registerAllModules();
 
@@ -47,6 +49,7 @@ const Home = () => {
 				year: item.year,
 				joined: item.joined ? 'Gabung' : 'Tidak',
 				status: item.status,
+				grade_point_average: item.grade_point_average,
 				parents_income: item.parents_income,
 				parents_expense: item.parents_expense,
 				rank: item.rank || null
@@ -61,6 +64,7 @@ const Home = () => {
 			year,
 			joined,
 			status,
+			grade_point_average,
 			parents_income,
 			parents_expense,
 			rank
@@ -71,6 +75,7 @@ const Home = () => {
 			year,
 			joined,
 			status,
+			grade_point_average,
 			parents_income,
 			parents_expense,
 			rank
@@ -103,7 +108,7 @@ const Home = () => {
 		copy.forEach(obj => {
 		   const helper = [];
 		   arr2.forEach(obj2 => {
-			  if(obj.id == obj2.id){
+			   if(obj.id === obj2.id){
 				 i++;
 				 helper.push(arr2[i]['rank']);
 			  };
@@ -122,9 +127,14 @@ const Home = () => {
 		.then(res => res.data)
 		.then(data => {
 			data.shift()
-			// console.log(globalData)
-			const merged = mergeArray(globalData, data)
-
+			const dataParsed = data.map(item => {
+				return {
+					id: + item.id,
+					rank: item.rank
+				}
+			})
+			const merged = mergeArray(globalData, dataParsed)
+			// console.log(merged)
 			const keys = Object.keys(merged[0])
 
 			keys[11] = 'parents_status'
@@ -160,8 +170,19 @@ const Home = () => {
 					<Button onClick={handleCalculate}>Calculate Rank</Button>
 				</div>
 				<div id='data'></div>
+				<Modal show={false}>
+					<h1 className='font-black mb-3'>Tambah Pelajar Baru</h1>
+					<form>
+						<Input label={'Nama'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Nama Pelajar' />
+						<Input label={'Jurusan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Jurusan Pelajar' />
+						<Input label={'Tahun Angkatan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Tahun Angkatan Pelajar' />
+						<Input label={'Keorganisasian'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Keorganisasian Pelajar' />
+						<Input label={'Gaji Orang Tua'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Gaji Orang Tua Pelajar' />
+						<Input label={'Pengeluaran Bulanan'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan Pengeluaran Bulanan Pelajar' />
+						<Input label={'IPK'} type='text' name='name' className='text-neutral-700' placeholder='Masukkan IPK Pelajar' />
+					</form>
+				</Modal>
 			</main>
-			
 		</>
 	)
 }

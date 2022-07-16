@@ -45,10 +45,10 @@ const Create = () => {
         e.preventDefault()
 
         const data = {name, department, year, organizations_id, parent_statuses_id, parents_expense, parents_income, grade_point_average}
-
+        console.log(data)
         axios.post(`${Hosts.main}/students`, data)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
             })
             .catch(error => console.log(error))
     }
@@ -94,7 +94,7 @@ const Create = () => {
           /> */}
           <Select label="Pilih Status Keorganisasian" name="organization" onChange={handleChangeOrganization}>
             {
-                defaultOrganization.map(({id,joined}, key) => (<option value={id} key={key}>{joined ? 'Gabung' : 'Tidak'}</option>))
+                defaultOrganization.map(({id,joined}, key) => (<option value={+id} key={key}>{joined ? 'Gabung' : 'Tidak'}</option>))
             }
           </Select>
            {/* <Input
@@ -112,7 +112,7 @@ const Create = () => {
           </Select>
           <Input
             label={"Gaji Orang Tua"}
-            type="text"
+            type="number"
             name="income"
             className="text-neutral-700"
             placeholder="Masukkan Gaji Orang Tua Pelajar"
@@ -120,7 +120,7 @@ const Create = () => {
           />
           <Input
             label={"Pengeluaran Bulanan"}
-            type="text"
+            type="number"
             name="expense"
             className="text-neutral-700"
             placeholder="Masukkan Pengeluaran Bulanan Pelajar"
@@ -128,7 +128,7 @@ const Create = () => {
           />
           <Input
             label={"IPK"}
-            type="text"
+            type="decimal"
             name="grade"
             className="text-neutral-700"
             placeholder="Masukkan IPK Pelajar"

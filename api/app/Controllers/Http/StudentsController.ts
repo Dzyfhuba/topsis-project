@@ -25,9 +25,13 @@ export default class StudentsController {
 
   public async store ({response, request}) {
     try {
-      // const student = await Student
+      const student = await Student.create(request.body())
+
       return response.send({
+        error: false,
+        status: 'success',
         data: request.body(),
+        student,
       })
     } catch (error) {
       return response.send({

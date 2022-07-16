@@ -8,6 +8,7 @@ export default class Input extends Component {
 		type: PropTypes.string,
 		placeholder: PropTypes.string,
 		className: PropTypes.string,
+		onChange:PropTypes.any
 	}
 
 	static defaultProps = {
@@ -20,6 +21,7 @@ export default class Input extends Component {
 				<label htmlFor={this.props.label} className='block capitalize'>{this.props.label}</label>
 				<input type={this.props.type} name={this.props.name} id={this.props.name} placeholder={this.props.placeholder}
 					className={`p-3 rounded-xl w-full ${this.props.className}`}
+					onChange={this.props.onChange}
 				/>
 			</div>
 		)
